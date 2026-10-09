@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy One Month, My Love 💗</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink-50:#fff0f5; --pink-100:#ffe0ec; --pink-200:#ffc2d9; --pink-300:#ff9cc2;
+    --pink-400:#ff6fa5; --pink-500:#f0478a; --pink-600:#d42c6f; --rose:#b81d5b;
+    --ink:#5a1834; --white:#fff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Quicksand',sans-serif; color:var(--ink);
+    background:linear-gradient(160deg,var(--pink-50),var(--pink-100) 45%,var(--pink-200));
+    background-attachment:fixed; min-height:100vh; overflow-x:hidden;
+  }
+  body.locked{overflow:hidden}
+  h1,h2,.script{font-family:'Dancing Script',cursive}
+
+  /* floating hearts background */
+  #hearts{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+  .fh{position:absolute;bottom:-40px;color:var(--pink-400);opacity:.55;animation:rise linear forwards}
+  @keyframes rise{to{transform:translateY(-115vh) rotate(25deg);opacity:0}}
+
+  /* ---------- Gift screen ---------- */
+  #intro{
+    position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:28px;text-align:center;padding:16px;
+    transition:opacity 1.2s ease;cursor:pointer;
+  }
+  #intro h1{font-size:clamp(2.6rem,8vw,5rem);color:var(--pink-600);text-shadow:0 3px 0 #fff}
+  #intro p{font-size:clamp(1rem,3vw,1.25rem);color:var(--rose)}
+  .hint{animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{50%{opacity:.45;transform:scale(.97)}}
+
+  .gift{position:relative;width:220px;height:220px;cursor:pointer;animation:wiggle 2.4s ease-in-out infinite}
+  .gift:hover{animation-duration:.8s}
+  @keyframes wiggle{0%,100%{transform:rotate(0)}10%{transform:rotate(-6deg)}20%{transform:rotate(6deg)}30%{transform:rotate(-4deg)}40%{transform:rotate(0)}}
+  .box{position:absolute;bottom:0;left:10px;width:200px;height:150px;border-radius:10px;
+    background:linear-gradient(135deg,var(--pink-400),var(--pink-600));box-shadow:0 18px 40px rgba(212,44,111,.35)}
+  .box::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:34px;transform:translateX(-50%);background:#fff;opacity:.92}
+  .lid{position:absolute;top:30px;left:0;width:220px;height:48px;border-radius:10px;z-index:2;
+    background:linear-gradient(135deg,var(--pink-300),var(--pink-500));box-shadow:0 6px 14px rgba(0,0,0,.12);
+    transition:transform 1s cubic-bezier(.2,.9,.3,1.3),opacity 1s}
+  .lid::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:34px;transform:translateX(-50%);background:#fff}
+  .bow{position:absolute;top:-38px;left:50%;transform:translateX(-50%);width:110px;height:50px}
+  .bow span{position:absolute;top:0;width:52px;height:46px;border:12px solid #fff;border-radius:50% 50% 10% 50%}
+  .bow span:first-child{left:0;transform:rotate(-20deg)}
+  .bow span:last-child{right:0;transform:rotate(20deg) scaleX(-1)}
+  .gift.open{animation:none}
+  .gift.open .lid{transform:translate(160px,-320px) rotate(70deg);opacity:0}
+  .gift.open .box{animation:shake .5s}
+  @keyframes shake{25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-4px)}}
+
+  /* ---------- Explosion ---------- */
+  #burst{position:fixed;inset:0;z-index:20;pointer-events:none;overflow:hidden}
+  .pol{position:absolute;left:50%;top:55%;width:var(--w);padding:6px 6px 22px;background:#fff;
+    border-radius:4px;box-shadow:0 10px 25px rgba(90,24,52,.3);
+    transform:translate(-50%,-50%) scale(.1);opacity:0;
+    transition:transform 1.6s cubic-bezier(.12,.9,.25,1),opacity .4s}
+  .pol img{width:100%;aspect-ratio:1;object-fit:cover;display:block;border-radius:2px}
+  .pol.fly{opacity:1;transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) rotate(var(--r)) scale(1)}
+  .pol.fade{transition:opacity 1.2s ease,transform 1.2s ease;opacity:0;
+    transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y) + 120px)) rotate(var(--r)) scale(.8)}
+  .confetti{position:absolute;left:50%;top:55%;font-size:var(--s);transition:transform 2s cubic-bezier(.1,.8,.3,1),opacity 2s;opacity:1}
+
+  /* ---------- Main ---------- */
+  main{position:relative;z-index:1;opacity:0;transition:opacity 1.5s ease;pointer-events:none}
+  main.show{opacity:1;pointer-events:auto}
+  section{max-width:1000px;margin:0 auto;padding:80px 16px}
+  .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:18px}
+  .hero h1{font-size:clamp(3rem,10vw,6.5rem);color:var(--pink-600);line-height:1.05;text-shadow:0 4px 0 #fff}
+  .hero .sub{font-size:clamp(1.05rem,3vw,1.35rem);max-width:620px;line-height:1.7}
+  .big-heart{font-size:4rem;animation:beat 1.2s infinite}
+  @keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.18)}30%{transform:scale(1)}45%{transform:scale(1.12)}}
+  .scroll{margin-top:24px;color:var(--rose);font-weight:600;animation:pulse 1.6s infinite}
+
+  h2{font-size:clamp(2.3rem,6vw,3.6rem);color:var(--pink-600);text-align:center;margin-bottom:12px}
+  .lead{text-align:center;max-width:620px;margin:0 auto 50px;line-height:1.7}
+
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px}
+  .stat{background:rgba(255,255,255,.75);border-radius:20px;padding:22px 12px;text-align:center;box-shadow:0 8px 24px rgba(240,71,138,.15)}
+  .stat b{display:block;font-size:2.2rem;color:var(--pink-500);font-family:'Dancing Script',cursive}
+  .stat span{font-size:.92rem}
+
+  /* timeline */
+  .timeline{position:relative;padding-left:0}
+  .timeline::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:4px;transform:translateX(-50%);
+    background:linear-gradient(var(--pink-300),var(--pink-500));border-radius:4px}
+  .item{position:relative;width:50%;padding:0 40px 50px;opacity:0;transform:translateY(40px);transition:all .8s ease}
+  .item.in{opacity:1;transform:none}
+  .item:nth-child(odd){left:0;text-align:right}
+  .item:nth-child(even){left:50%}
+  .item .dot{position:absolute;top:6px;width:44px;height:44px;border-radius:50%;background:#fff;
+    display:grid;place-items:center;font-size:1.3rem;box-shadow:0 4px 12px rgba(240,71,138,.35);z-index:1}
+  .item:nth-child(odd) .dot{right:-22px}
+  .item:nth-child(even) .dot{left:-22px}
+  .card{background:rgba(255,255,255,.85);border-radius:20px;padding:22px;box-shadow:0 10px 30px rgba(240,71,138,.15);text-align:left}
+  .card .tag{display:inline-block;font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    padding:4px 10px;border-radius:99px;margin-bottom:8px}
+  .up .tag{background:var(--pink-100);color:var(--pink-600)}
+  .down .tag{background:#efe4ff;color:#6b3fa0}
+  .card h3{font-family:'Dancing Script',cursive;font-size:1.8rem;color:var(--rose);margin-bottom:6px}
+  .card p{line-height:1.7;font-size:.98rem}
+  .card img{width:100%;height:200px;object-fit:cover;border-radius:12px;margin-top:12px}
+
+  /* gallery */
+  .gallery{columns:4 200px;column-gap:14px}
+  .gallery figure{break-inside:avoid;margin-bottom:14px;background:#fff;padding:6px;border-radius:12px;
+    box-shadow:0 6px 18px rgba(240,71,138,.18);cursor:zoom-in;transition:transform .3s}
+  .gallery figure:hover{transform:translateY(-4px) rotate(-1deg)}
+  .gallery img{width:100%;display:block;border-radius:8px}
+
+  /* letter */
+  .letter{background:#fff;border-radius:24px;padding:clamp(24px,6vw,56px);max-width:720px;margin:0 auto;
+    box-shadow:0 20px 50px rgba(240,71,138,.22);position:relative;
+    background-image:repeating-linear-gradient(transparent 0 34px,#ffe0ec 34px 35px)}
+  .letter p{line-height:35px;font-size:1.05rem;margin-bottom:35px}
+  .letter .script{font-size:1.9rem;color:var(--pink-600)}
+  .letter .sign{text-align:right;font-size:2rem;color:var(--rose)}
+
+  .promises{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+  .promise{background:rgba(255,255,255,.8);padding:20px;border-radius:18px;box-shadow:0 8px 20px rgba(240,71,138,.15);line-height:1.6}
+  .promise::before{content:"💗 ";}
+
+  footer{text-align:center;padding:60px 16px 90px;font-size:1.1rem}
+  footer .script{font-size:2.4rem;color:var(--pink-600)}
+
+  /* music button */
+  #music{position:fixed;right:18px;bottom:18px;z-index:30;width:54px;height:54px;border-radius:50%;border:none;
+    background:var(--pink-500);color:#fff;font-size:1.4rem;cursor:pointer;box-shadow:0 8px 20px rgba(212,44,111,.4);
+    display:none}
+  #music.on{animation:spin 4s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* lightbox */
+  #lb{position:fixed;inset:0;z-index:40;background:rgba(90,24,52,.85);display:none;align-items:center;justify-content:center;padding:16px;cursor:zoom-out}
+  #lb.open{display:flex}
+  #lb img{max-width:100%;max-height:90vh;border-radius:12px;border:6px solid #fff}
+
+  @media (max-width:700px){
+    .timeline::before{left:20px}
+    .item,.item:nth-child(even){width:100%;left:0;padding:0 0 40px 56px;text-align:left}
+    .item:nth-child(odd) .dot,.item:nth-child(even) .dot{left:-2px;right:auto}
+    .gift{transform:scale(.85)}
+  }
+</style>
+</head>
+<body class="locked">
+
+<div id="hearts"></div>
+
+<!-- Gift intro -->
+<div id="intro">
+  <h1>Hey my love… 💌</h1>
+  <p>Someone has a little surprise for you</p>
+  <div class="gift" id="gift" role="button" aria-label="Open your gift" tabindex="0">
+    <div class="lid"><div class="bow"><span></span><span></span></div></div>
+    <div class="box"></div>
+  </div>
+  <p class="hint">✨ tap the gift to open it ✨</p>
+</div>
+
+<div id="burst"></div>
+
+<audio id="song" src="WhatsApp Audio 2026-10-09 at 10.05.01 PM.mp4" loop preload="auto"></audio>
+<button id="music" title="Pause / play music">🎵</button>
+
+<main id="main">
+  <section class="hero">
+    <div class="big-heart">💗</div>
+    <h1>Happy One Month<br>Anniversary</h1>
+    <p class="sub">Thirty-ish days, countless texts, a few tears, way too many "no, YOU hang up first"s… and one heart that's completely yours. This little corner of the internet is all about <b>us</b>.</p>
+    <div class="scroll">scroll down, baby ↓</div>
+  </section>
+
+  <section>
+    <h2>Our Month in Numbers</h2>
+    <p class="lead">Not scientifically measured. Emotionally accurate though.</p>
+    <div class="stats">
+      <div class="stat"><b>30</b><span>days of being yours</span></div>
+      <div class="stat"><b>∞</b><span>"I miss you"s</span></div>
+      <div class="stat"><b>720</b><span>hours thinking about you</span></div>
+      <div class="stat"><b>a few</b><span>fights (we survived 💪)</span></div>
+      <div class="stat"><b>0</b><span>times I stopped loving you</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Our Story So Far</h2>
+    <p class="lead">The ups, the downs, the sulking, the making up — every single bit of it made us <i>us</i>.</p>
+    <div class="timeline" id="timeline"></div>
+  </section>
+
+  <section>
+    <h2>Every Little Memory</h2>
+    <p class="lead">Tap any photo to see it bigger 📸</p>
+    <div class="gallery" id="gallery"></div>
+  </section>
+
+  <section>
+    <h2>A Little Letter For You</h2>
+    <div class="letter">
+      <p class="script">My love,</p>
+      <p>It's only been a month, but it already feels like you've been part of my life forever. We've laughed until our stomachs hurt, we've fought over the silliest things, we've misunderstood each other and then found our way back — every single time.</p>
+      <p>I won't pretend it's all been perfect. There were nights we went to sleep upset, moments where my words came out wrong, and days when the distance between us felt way too big. But you know what? Even in those moments, I never once wanted anyone else. Every fight just showed me how much we care.</p>
+      <p>Thank you for your patience, your cute anger, your goodnight texts, and for choosing me even when I'm being difficult. Missing you is the hardest part of my day, and talking to you is the best part.</p>
+      <p>Here's to our first month — and to all the months, years, and forevers that come after it.</p>
+      <p class="sign">Forever yours 💗</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>My Promises To You</h2>
+    <p class="lead">For month two, and every month after.</p>
+    <div class="promises">
+      <div class="promise">I'll always come back and talk it out — no matter how big the fight.</div>
+      <div class="promise">I'll listen before I react, and try to understand before I argue.</div>
+      <div class="promise">I'll keep missing you like crazy (that one's not really a choice).</div>
+      <div class="promise">I'll keep sending you the cheesiest, most lovey-dovey texts.</div>
+      <div class="promise">I'll still lose the "who loves who more" argument on purpose.</div>
+      <div class="promise">I'll choose you. Every single day.</div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="script">Happy 1 Month, My Love</div>
+    <p>One down, forever to go 💞</p>
+  </footer>
+</main>
+
+<div id="lb"><img alt=""></div>
+
+<script>
+const names = ["9.55.27 PM","9.55.29 PM","9.55.30 PM","9.55.31 PM","9.55.39 PM","9.55.40 PM","9.55.41 PM","9.55.43 PM","9.55.44 PM (1)","9.55.44 PM","9.55.45 PM (1)","9.55.45 PM","9.55.46 PM","9.55.47 PM","9.55.48 PM","9.55.49 PM (1)","9.55.49 PM","9.55.50 PM (1)","9.55.50 PM","9.55.51 PM (1)","9.55.51 PM","9.55.52 PM (1)","9.55.52 PM","9.55.53 PM (1)","9.55.53 PM","9.55.54 PM","9.55.55 PM","9.55.56 PM","9.55.57 PM","9.55.58 PM","9.55.59 PM","9.56.02 PM","9.56.04 PM","9.56.06 PM","9.56.07 PM","9.56.08 PM (1)","9.56.08 PM","9.56.09 PM","9.56.10 PM","9.56.11 PM","9.56.12 PM","9.56.13 PM","9.56.14 PM","9.56.15 PM","9.56.16 PM","9.56.17 PM","9.56.18 PM","9.56.19 PM","9.56.20 PM","9.56.21 PM","9.56.23 PM","9.56.25 PM","9.56.27 PM (1)","9.56.29 PM (1)","9.56.30 PM (1)","9.56.32 PM (1)","9.56.33 PM (1)","9.56.34 PM","9.56.35 PM","9.56.41 PM","9.56.42 PM","9.56.43 PM","9.56.44 PM (1)","9.56.45 PM","9.56.46 PM","9.56.47 PM","9.56.50 PM","9.56.51 PM"];
+const photos = names.map(n => encodeURI(`WhatsApp Image 2026-10-09 at ${n}.jpeg`));
+
+/* ---- Story timeline ---- */
+const story = [
+  {mood:"up",   icon:"✨", tag:"The Beginning", title:"Where it all started",
+   text:"The day we made it official. Nervous texts, big smiles at the phone, and a feeling I couldn't explain. I just knew you were special."},
+  {mood:"up",   icon:"🥰", tag:"Lovey Dovey", title:"The honeymoon phase",
+   text:"Good morning texts, goodnight calls that lasted hours, nicknames only we understand, and me grinning like an idiot every time your name popped up."},
+  {mood:"down", icon:"🌧️", tag:"The First Fight", title:"Our first storm",
+   text:"Our first real fight. Short replies, the dreaded \"ok.\", and that heavy feeling in the chest. It hurt — but it also showed me how much you mean to me."},
+  {mood:"down", icon:"😶", tag:"Misunderstandings", title:"Lost in translation",
+   text:"A message read the wrong way, a tone that wasn't meant, an overthought silence. We learned that talking it out beats guessing every single time."},
+  {mood:"up",   icon:"😤💗", tag:"Love Arguments", title:"\"No, I love you more!\"",
+   text:"The only arguments I never want to win. Who misses who more, who should sleep first, who's cuter (it's you, obviously, stop arguing)."},
+  {mood:"down", icon:"🥺", tag:"Missing You", title:"The distance days",
+   text:"The days we couldn't talk enough or see each other. Staring at old photos, re-reading our chats, counting hours. Missing you is a full-time job."},
+  {mood:"up",   icon:"🤝", tag:"Making Up", title:"Always finding our way back",
+   text:"No matter how bad it got, we always came back to each other. Every sorry, every hug-through-the-screen, every \"I'm not leaving\" made us stronger."},
+  {mood:"up",   icon:"💞", tag:"Today", title:"One month of us",
+   text:"Through every up and every down — here we are. Still choosing each other, still falling a little more every day. Happy one month, my love."}
+];
+const tl = document.getElementById('timeline');
+story.forEach((s,i) => {
+  const img = photos[Math.floor(i * photos.length / story.length)];
+  tl.insertAdjacentHTML('beforeend', `
+    <div class="item ${s.mood}">
+      <div class="dot">${s.icon}</div>
+      <div class="card">
+        <span class="tag">${s.mood === 'up' ? '▲ ' : '▼ '}${s.tag}</span>
+        <h3>${s.title}</h3>
+        <p>${s.text}</p>
+        <img src="${img}" alt="" loading="lazy">
+      </div>
+    </div>`);
+});
+
+/* ---- Gallery ---- */
+const gal = document.getElementById('gallery');
+photos.forEach(p => gal.insertAdjacentHTML('beforeend', `<figure><img src="${p}" alt="Our memory" loading="lazy"></figure>`));
+const lb = document.getElementById('lb');
+gal.addEventListener('click', e => { if (e.target.tagName === 'IMG') { lb.firstElementChild.src = e.target.src; lb.classList.add('open'); }});
+lb.addEventListener('click', () => lb.classList.remove('open'));
+
+/* ---- Floating hearts ---- */
+const hearts = document.getElementById('hearts');
+const glyphs = ['💗','💕','💖','❤','💞','🌸'];
+setInterval(() => {
+  const h = document.createElement('span');
+  h.className = 'fh';
+  h.textContent = glyphs[Math.random()*glyphs.length|0];
+  h.style.left = Math.random()*100 + 'vw';
+  h.style.fontSize = (14 + Math.random()*22) + 'px';
+  h.style.animationDuration = (7 + Math.random()*6) + 's';
+  hearts.appendChild(h);
+  setTimeout(() => h.remove(), 14000);
+}, 450);
+
+/* ---- Gift opening + explosion ---- */
+const gift = document.getElementById('gift');
+const song = document.getElementById('song');
+const musicBtn = document.getElementById('music');
+let opened = false;
+
+function openGift(){
+  if (opened) return;
+  opened = true;
+  song.currentTime = 0;
+  song.play().then(() => musicBtn.classList.add('on')).catch(() => {});
+  musicBtn.style.display = 'block';
+  gift.classList.add('open');
+
+  const burst = document.getElementById('burst');
+  const W = innerWidth, H = innerHeight;
+  const small = W < 700;
+  const pols = photos.map((p, i) => {
+    const el = document.createElement('div');
+    el.className = 'pol';
+    const angle = Math.random() * Math.PI * 2;
+    const dist = (0.25 + Math.random() * 0.75);
+    el.style.setProperty('--w', (small ? 70 : 110) + Math.random() * (small ? 40 : 60) + 'px');
+    el.style.setProperty('--x', Math.cos(angle) * dist * W * 0.48 + 'px');
+    el.style.setProperty('--y', Math.sin(angle) * dist * H * 0.48 + 'px');
+    el.style.setProperty('--r', (Math.random() * 60 - 30) + 'deg');
+    el.style.transitionDelay = (i * 0.018) + 's';
+    el.innerHTML = `<img src="${p}" alt="">`;
+    burst.appendChild(el);
+    return el;
+  });
+  // heart confetti
+  for (let i = 0; i < 60; i++) {
+    const c = document.createElement('span');
+    c.className = 'confetti';
+    c.textContent = glyphs[Math.random()*glyphs.length|0];
+    c.style.setProperty('--s', (14 + Math.random()*24) + 'px');
+    burst.appendChild(c);
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      const a = Math.random()*Math.PI*2, d = 200 + Math.random()*Math.max(W,H)*0.6;
+      c.style.transform = `translate(${Math.cos(a)*d}px, ${Math.sin(a)*d}px) rotate(${Math.random()*720}deg)`;
+      c.style.opacity = 0;
+    }));
+  }
+
+  setTimeout(() => pols.forEach(el => el.classList.add('fly')), 350);
+  document.getElementById('intro').style.opacity = 0;
+
+  // let the explosion hang in the air, then reveal the page
+  setTimeout(() => {
+    pols.forEach((el, i) => { el.style.transitionDelay = (i * 0.012) + 's'; el.classList.add('fade'); });
+    document.getElementById('main').classList.add('show');
+    document.body.classList.remove('locked');
+  }, 5200);
+  setTimeout(() => { burst.remove(); document.getElementById('intro').remove(); }, 7800);
+}
+document.getElementById('intro').addEventListener('click', openGift);
+gift.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openGift(); });
+
+musicBtn.addEventListener('click', () => {
+  if (song.paused) { song.play(); musicBtn.classList.add('on'); }
+  else { song.pause(); musicBtn.classList.remove('on'); }
+});
+
+/* ---- Reveal timeline on scroll ---- */
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }}), {threshold:.15});
+document.querySelectorAll('.item').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
